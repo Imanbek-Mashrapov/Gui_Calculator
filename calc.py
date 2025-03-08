@@ -53,7 +53,7 @@ class Ui_MainWindow(object):
         self.oneButton.setLocale(QtCore.QLocale(QtCore.QLocale.Language.Russian, QtCore.QLocale.Country.Kyrgyzstan))
         self.oneButton.setObjectName("oneButton")
         self.gridLayout.addWidget(self.oneButton, 3, 0, 1, 1)
-        self.equalButton = QtWidgets.QPushButton(parent=self.gridLayoutWidget, clicked=lambda: self.press_it('='))
+        self.equalButton = QtWidgets.QPushButton(parent=self.gridLayoutWidget, clicked=lambda: self.calculate())
         self.equalButton.setStyleSheet("font-size: 24px;\n"
 "    font-weight: bold;\n"
 "    border-radius: 70px;\n"
@@ -107,7 +107,7 @@ class Ui_MainWindow(object):
         self.minusButton.setLocale(QtCore.QLocale(QtCore.QLocale.Language.Russian, QtCore.QLocale.Country.Kyrgyzstan))
         self.minusButton.setObjectName("minusButton")
         self.gridLayout.addWidget(self.minusButton, 2, 3, 1, 1)
-        self.plusminusButton = QtWidgets.QPushButton(parent=self.gridLayoutWidget, clicked=lambda: self.press_it('+/-'))
+        self.plusminusButton = QtWidgets.QPushButton(parent=self.gridLayoutWidget, clicked=lambda: self.turn_negative())
         self.plusminusButton.setStyleSheet("font-size: 24px;\n"
 "    font-weight: bold;\n"
 "    border-radius: 70px;\n"
@@ -230,7 +230,7 @@ class Ui_MainWindow(object):
         self.sevenButton.setLocale(QtCore.QLocale(QtCore.QLocale.Language.Russian, QtCore.QLocale.Country.Kyrgyzstan))
         self.sevenButton.setObjectName("sevenButton")
         self.gridLayout.addWidget(self.sevenButton, 1, 0, 1, 1)
-        self.decimalButton = QtWidgets.QPushButton(parent=self.gridLayoutWidget, clicked=lambda: self.press_it('.'))
+        self.decimalButton = QtWidgets.QPushButton(parent=self.gridLayoutWidget, clicked=lambda: self.decimal_dot())
         self.decimalButton.setStyleSheet("font-size: 30px;\n"
 "    font-weight: bold;\n"
 "    border-radius: 70px;\n"
@@ -281,7 +281,7 @@ class Ui_MainWindow(object):
 "    color: white;")
         self.percentButton.setObjectName("percentButton")
         self.gridLayout.addWidget(self.percentButton, 0, 0, 1, 1)
-        self.delButton = QtWidgets.QPushButton(parent=self.gridLayoutWidget, clicked=lambda: self.press_it('del'))
+        self.delButton = QtWidgets.QPushButton(parent=self.gridLayoutWidget, clicked=lambda: self.remove_last())
         self.delButton.setStyleSheet("font-size: 20px;\n"
 "    font-weight: bold;\n"
 "    border-radius: 70px;\n"
@@ -342,6 +342,36 @@ class Ui_MainWindow(object):
         self.delButton.setText(_translate("MainWindow", "⌫"))
         self.divideButton.setText(_translate("MainWindow", "÷"))
 
+    def calculate(self):
+        try:
+            screen = self.outputLabel.text()
+            answer = eval(screen)
+            self.outputLabel.setText(str(answer))
+        except:
+            self.outputLabel.setText('Error')
+
+    def turn_negative(self):
+        screen = self.outputLabel.text()
+        if '-' in screen:
+            self.outputLabel.setText(screen.replace('-', ''))
+        else:
+            self.outputLabel.setText(f'-{screen}')
+
+    def remove_last(self):
+        screen = self.outputLabel.text()
+        if screen == '0':
+            pass
+        else:
+            screen = screen[:-1]
+            self.outputLabel.setText(screen)
+
+    def decimal_dot(self):
+        screen = self.outputLabel.text()
+        if screen[-1] == '.':
+            pass
+        else:
+            self.outputLabel.setText(f'{self.outputLabel.text()}.')
+
     def press_it(self, pressed):
         if pressed == 'C':
             self.outputLabel.setText('0')
@@ -351,12 +381,4 @@ class Ui_MainWindow(object):
             self.outputLabel.setText(f'{self.outputLabel.text()}{pressed}')
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec())
-"C:\Users\User\Documents\Python\oop_learning\calculator_gui"
+
