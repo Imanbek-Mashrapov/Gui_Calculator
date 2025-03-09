@@ -1,12 +1,16 @@
 # C:\Users\User\AppData\Roaming\Python\Python311\Scripts\pyqt6-tools.exe designer
-from PyQt6 import QtCore, QtGui, QtWidgets
-from calc import Ui_MainWindow
+from calc_logic import MyWindow
+from PyQt6.QtWidgets import QApplication
+from PyQt6.QtGui import QIcon
+import sys
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    with open('css_style.txt', 'r') as f:
+        app.setStyleSheet(f.read())
+
+    window = MyWindow()
+    window.show()
     sys.exit(app.exec())
+
