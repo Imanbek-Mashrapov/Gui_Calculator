@@ -66,10 +66,12 @@ QPushButton#clear:pressed {
 }
 
 /* Output display */
-QLabel {
-    font-size: 40px; /* Increased font size */
+QLineEdit {
+    font-size: 40px; /* Large font */
     qproperty-alignment: 'AlignRight';
-    padding: 15px;
+    padding: 15px; /* Space inside the label */
+    padding-right: 25px; /* Extra space on the right */
     background-color: #25253a;
     border-radius: 5px;
 }
+
