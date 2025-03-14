@@ -15,7 +15,7 @@ operations = {
 class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        ui_path = os.path.join(os.path.dirname(__file__), "calculator_design.ui")
+        ui_path = os.path.join(os.path.dirname(__file__), "design/calculator_design.ui")
         print(f"Loading UI from: {ui_path}")
         uic.loadUi(ui_path, self)
         self.setMinimumSize(300, 400)
@@ -42,10 +42,14 @@ class MyWindow(QMainWindow):
         self.equalButton = self.findChild(QPushButton, 'equalButton')
         self.clearButton = self.findChild(QPushButton, 'clearButton')
         self.delButton = self.findChild(QPushButton, 'delButton')
+        self.percentButton = self.findChild(QPushButton, 'percentButton')
+        self.plusMinusButton = self.findChild(QPushButton, 'plusMinusButton')
 
         self.outputLineEdit = self.findChild(QLineEdit, "outputLineEdit")
 
         # Connect buttons
+
+        self.plusminusButton.clicked.connect(self.make_plus_minus)
         self.zeroButton.clicked.connect(lambda: self.add_to_expression('0'))
         self.oneButton.clicked.connect(lambda: self.add_to_expression('1'))
         self.twoButton.clicked.connect(lambda: self.add_to_expression('2'))
@@ -65,6 +69,7 @@ class MyWindow(QMainWindow):
         self.equalButton.clicked.connect(self.calculate)
         self.clearButton.clicked.connect(self.clear_expression)
         self.delButton.clicked.connect(self.remove_last_char)
+        self.percentButton.clicked.connect(self.percentage)
 
     def add_to_expression(self, button):
         if self.outputLineEdit.text() == "0" or self.outputLineEdit.text() == '':
@@ -106,6 +111,27 @@ class MyWindow(QMainWindow):
 
         if '.' not in last_number:
             self.add_to_expression('.')
+
+    def make_plus_minus(self):
+        if self.expression:
+            if self.expression[0] == '-':
+                self.expression = self.expression[1:]
+            else:
+                self.expression = '-' + self.expression
+
+            self.outputLineEdit.setText(self.expression)
+
+    def percentage(self):
+        try:
+            if self.expression:
+                last_num = self.expression.split('+')[-1].split('-')[-1].split('*')[-1].split('/')[-1]
+                if last_num:
+                    percent_value = str(eval(last_num) / 100)
+                    self.expression = self.expression[:-len(last_num)] + percent_value
+                    self.outputLineEdit.setText(self.expression)
+        except:
+            self.outputLineEdit.setText("Error")
+            self.expression = ""
 
 
 

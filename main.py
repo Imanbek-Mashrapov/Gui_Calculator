@@ -7,7 +7,7 @@ import sys
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    with open('css_style.txt', 'r') as f:
+    with open('design/css_style.txt', 'r') as f:
         app.setStyleSheet(f.read())
 
     window = MyWindow()
